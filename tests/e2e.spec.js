@@ -2,7 +2,8 @@
 
 import {expect, test } from '@playwright/test';
 import  * as Homepage from '../pages/home.page'
-
+import  * as PromoCode from '../pages/promocode.page'
+import  * as SearchResult from '../pages/searchresult.page'
 
 test.beforeEach(async ({ page }, testInfo) => {
   console.log(`Running Test ${testInfo.title}`);
@@ -17,75 +18,83 @@ test('Should validate there will be no other month apart from july and december 
    await Homepage.checkDepartureLisForDecemberAndJuly(page)
  });
 test('Should validate message when seats are available ', async ({ page }) => {
-  await Homepage.validateSeatAvailableMessage(page)
+  await SearchResult.validateSeatAvailableMessage(page)
 });
 
 test('Should validate message when combination invalid  ', async ({ page }) => {
-    await Homepage.validateInvalidCombination(page)
+    await SearchResult.validateInvalidCombination(page)
   });
 
 test('Should validate message when no value selected in departure ', async ({ page }) => {
-    await Homepage.validateMessageNoValueSelectedInDeparture(page)
+    await SearchResult.validateMessageNoValueSelectedInDeparture(page)
     await Homepage.clickSearchButton(page)
   });
 
   test('Should validate message when no value selected in return ', async ({ page }) => {
-    await Homepage.validateMessageNoValueSelectedInReturn(page)
+    await SearchResult.validateMessageNoValueSelectedInReturn(page)
     await Homepage.clickSearchButton(page)
   });
 
   test('Should validate message when no value selected in departure and return ', async ({ page }) => {
-    await Homepage.validateMessageNoValue(page)
+    await SearchResult.validateMessageNoValue(page)
     await Homepage.clickSearchButton(page)
   });
 
-  test.only('Should validate message when customer enter invalid Promo code ', async ({ page }) => { 
-    await Homepage.enterPromoCode(page,)
-  });
 
   test('Should validate message when customer enter 10% Discount  Promo code ', async ({ page }) => {
-    await Homepage.enterPromoCode(page,'AF1-FJK-001')
-    await Homepage.verifyValidPromoCodeMessage(page,'AF1-FJK-001','10%')
+    await PromoCode.enterPromoCode(page,'AF1-FJK-001')
+    await Homepage.clickSearchButton(page)
+    await PromoCode.verifyValidPromoCodeMessage(page,'AF1-FJK-001','10%')
+    await SearchResult.validateSeatAvailableText(page)
   });
 
   test('Should validate message when customer enter 90% Discount  Promo code ', async ({ page }) => {  
-    await Homepage.enterPromoCode(page,'AF9-FJK-009')
-    await Homepage.verifyValidPromoCodeMessage(page,'AF1-FJK-001','90%')
+    await PromoCode.enterPromoCode(page,'AF9-FJK-009')
+    await Homepage.clickSearchButton(page)
+    await PromoCode.verifyValidPromoCodeMessage(page,'AF1-FJK-001','90%')
+    await SearchResult.validateSeatAvailableText(page)
   });
 
   test('Should validate message when customer enter all numbers  Promo code ', async ({ page }) => {  
-    await Homepage.enterPromoCode(page,'456-123-005')
-    await Homepage.verifyInvalidPromoCodeMessage(page,'456-123-005')
+    await PromoCode.enterPromoCode(page,'456-123-005')
+    await Homepage.clickSearchButton(page)
+    await PromoCode.verifyInvalidPromoCodeMessage(page,'456-123-005')
   });
 
   test('Should validate message when customer enter all special characters Promo code ', async ({ page }) => {  
-    await Homepage.enterPromoCode(page,'456-123-005')
-    await Homepage.verifyInvalidPromoCodeMessage(page,'456-123-005')
+    await PromoCode.enterPromoCode(page,'456-123-005')
+    await Homepage.clickSearchButton(page)
+    await PromoCode.verifyInvalidPromoCodeMessage(page,'456-123-005')
   });
 
   test('Should validate message when customer enters promotional code with incorrect discount percentage', async ({ page }) => {  
     await Homepage.enterPromoCode(page,'X7C-MNO-789')
+    await Homepage.clickSearchButton(page)
     await Homepage.verifyInvalidPromoCodeMessage(page,'X7C-MNO-789')
   });
 
   test('Should validate message when customer enters promotional code with incorrect check digit', async ({ page }) => {  
     await Homepage.enterPromoCode(page,'X2B-PQR-123')
+    await Homepage.clickSearchButton(page)
     await Homepage.verifyInvalidPromoCodeMessage(page,'X2B-PQR-123')
   });
 
   test('Should validate message when customer enters promotional code with incorrect format', async ({ page }) => {  
     await Homepage.enterPromoCode(page,'XYZ-123-ABC')
+    await Homepage.clickSearchButton(page)
     await Homepage.verifyInvalidPromoCodeMessage(page,'XYZ-123-ABC')
   });
 
   test('Should validate message when customer enters promotional code with extra characters', async ({ page }) => {  
     await Homepage.enterPromoCode(page,'AF1-FJK-001D')
+    await Homepage.clickSearchButton(page)
     await Homepage.verifyInvalidPromoCodeMessage(page,'AF1-FJK-001D')
 
   });
 
   test('Should validate message when customer enter promotional code with less characters less than 9 character', async ({ page }) => {  
     await Homepage.enterPromoCode(page,'AF1-FJK-00')
+    await Homepage.clickSearchButton(page)
     await Homepage.verifyInvalidPromoCodeMessage(page,'AF1-FJK-00')
 
   });
