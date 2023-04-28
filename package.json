@@ -1,0 +1,16 @@
+{
+  "name": "testsolution_thoughtworks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "run_test_local": "npx playwright  test /e2e --project=chromium --headed --debug workers=1",
+    "run_test_ci": "npx playwright  test /e2e --project=chromium "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.33.0"
+  }
+}
